@@ -1,11 +1,12 @@
 ---
 title: "Lab 03"
-author: ""
-date: ""
-editor_options: 
-  chunk_output_type: console
+author: "Joud AlFarra"
+date: "Tuesday May, 2, 2023"
 output:
+  word_document: default
   pdf_document: default
+editor_options:
+  chunk_output_type: console
 ---
 
 # Packages
@@ -23,46 +24,58 @@ fl_votes %>%
   slice(1:6)
 ```
 
-
 # Exercise 1
 
 ```{r add-winner}
-
+fl_votes <- fl_votes %>% mutate(winner20 = if_else(rep20 > dem20, "Donald Trump", "Joe Biden"))
 ```
-
 
 # Exercise 2
 
 ```{r fl-plot-1}
-
-
+ggplot(fl_votes) +
+  geom_sf(aes(fill = winner20)) +
+  scale_fill_manual(values = c("#DE0100", "#0015BC")) +
+  labs(title = "Election Winners 2020", fill = "Winner") +
+  theme_bw()
 ```
 
 # Exercise #3
 
 ```{r fl-props}
-
+fl_votes <- fl_votes %>% mutate(Prop_rep16 = rep16 / (rep16 + dem16),
+                                Prop_rep20 = rep20 / (rep20 + dem20))
 ```
 
 # Exercise 4
 
 ```{r fl-plot-2}
-
+ggplot(fl_votes) +
+  geom_sf(aes(fill = Prop_rep20)) +
+  scale_fill_gradient(low = "#0015BC", high = "#DE0100") +
+  labs(title = "Election 2020 Results", fill = "Republican Share of Votes") +
+  theme_bw()
 ```
 
 # Exercise 5
 
 ```{r fl-change}
-
+fl_votes <- fl_votes %>% mutate(diff_rep = Prop_rep20 - Prop_rep16)
 ```
 
 # Exercise 6
 
 ```{r fl-plot-3}
-
+ggplot(fl_votes) +
+  geom_sf(aes(fill = diff_rep)) +
+  scale_fill_gradient2(low = "#0015BC", midpoint = 0, high = "#DE0100") +
+  labs(title = "Change in Republican Vote Share Between 2016 and 2020", fill = "Change in Republican Share") +
+  theme_bw()
 ```
 
 # Exercise 7
 
+-What do the visualizations you developed tell you about the 2016 and 2020 Presidential election in Florida? What are limitations of these visualizations?
 
-
+The visualizations show that even though the republicans won the 2020 elections, the proportions of the republican party to the democratic party is very close. 
+Limitations of the visualization could be the closeness in shades of colors, which might cause inaccuracy when reading the data.
